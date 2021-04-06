@@ -72,18 +72,12 @@ class Client {
         return this;
     }
 
-    Future initCookies() async {
-        if(!kIsWeb) {
-            final Directory cookieDir = await _getCookiePath();
-            cookieJar = new PersistCookieJar(storage: FileStorage(cookieDir.path));
-            this.http.interceptors.add(CookieManager(cookieJar));    
-        }
-    }
-
     Future init() async {
         // if web skip cookie implementation and origin header as those are automatically handled by browsers
         if(!kIsWeb) {
-            await initCookies();
+            final Directory cookieDir = await _getCookiePath();
+            cookieJar = new PersistCookieJar(storage: FileStorage(cookieDir.path));
+            this.http.interceptors.add(CookieManager(cookieJar));
             PackageInfo packageInfo = await PackageInfo.fromPlatform();
             addHeader('Origin', 'appwrite-$type://${packageInfo.packageName}');
         } else {
@@ -92,8 +86,7 @@ class Client {
         }
 
         this.http.options.baseUrl = this.endPoint;
-        //this might not require as we are handling errors and throwing exceptions
-        //this.http.options.validateStatus = (status) => status! < 400;
+        this.http.options.validateStatus = (status) => status! < 400;
     }
 
     Future<Response> call(HttpMethod method, {String path = '', Map<String, String> headers = const {}, Map<String, dynamic> params = const {}, ResponseType? responseType}) async {
@@ -105,6 +98,11 @@ class Client {
             };
         }
 
+        if(!initialized) {
+            await this.init();
+        }
+
+        // Origin is hardcoded for testing
         Options options = Options(
             headers: {...this.headers!, ...headers},
             method: method.name(),
