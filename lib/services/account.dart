@@ -270,7 +270,11 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return client.call(HttpMethod.post, path: path, params: params, headers: headers).then((res) async {
+          await client.initCookies();
+          return res;
+        });
+
     }
 
      /// Delete All Account Sessions
@@ -346,6 +350,7 @@ class Account extends Service {
                 cookie.path = '/';
                 List<Cookie> cookies = [cookie];
                 client.cookieJar.saveFromResponse(Uri.parse(client.endPoint), cookies);
+                await client.initCookies();
             });
         }
 
