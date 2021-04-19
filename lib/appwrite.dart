@@ -2,6 +2,8 @@ library appwrite;
 
 import 'dart:io';
 import 'dart:convert';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
