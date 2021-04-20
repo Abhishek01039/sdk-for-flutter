@@ -90,11 +90,11 @@ class Client {
       if (Platform.isAndroid) {
         final andinfo = await deviceInfoPlugin.androidInfo;
         device =
-            '(Linux; U; Android ${andinfo.version.release}; ${andinfo.androidId}';
+            '(Linux; U; Android ${andinfo.version.release}; ${andinfo.brand} ${andinfo.model})';
       }
       if (Platform.isIOS) {
         final iosinfo = await deviceInfoPlugin.iosInfo;
-        device = '${iosinfo.name} iOS/${iosinfo.systemVersion}';
+        device = '${iosinfo.utsname.machine} iOS/${iosinfo.systemVersion}';
       }
       final userAgent = '${packageInfo.appName}/${packageInfo.version} $device';
       addHeader('user-agent', userAgent);
@@ -105,6 +105,7 @@ class Client {
 
     this.http.options.baseUrl = this.endPoint;
     this.http.options.validateStatus = (status) => status! < 400;
+    initialized = true;
   }
 
   Future<Response> call(HttpMethod method,
