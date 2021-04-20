@@ -11,7 +11,7 @@ class Teams extends Service {
      /// of the project's teams. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> list({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+     Future<TeamListModel> list({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) async {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -25,7 +25,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return TeamListModel.fromMap(res.data);
     }
 
      /// Create Team
@@ -35,7 +36,7 @@ class Teams extends Service {
      /// who will be able add new owners and update or delete the team from your
      /// project.
      ///
-    Future<Response> create({@required String name, List roles = const ["owner"]}) {
+     Future<TeamModel> create({required String name, List roles = const ["owner"]}) async {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -47,7 +48,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return TeamModel.fromMap(res.data);
     }
 
      /// Get Team
@@ -55,7 +57,7 @@ class Teams extends Service {
      /// Get a team by its unique ID. All team members have read access for this
      /// resource.
      ///
-    Future<Response> get({@required String teamId}) {
+     Future<TeamModel> get({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -65,7 +67,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return TeamModel.fromMap(res.data);
     }
 
      /// Update Team
@@ -73,7 +76,7 @@ class Teams extends Service {
      /// Update a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> update({@required String teamId, @required String name}) {
+     Future<TeamModel> update({required String teamId, required String name}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -84,7 +87,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        return TeamModel.fromMap(res.data);
     }
 
      /// Delete Team
@@ -92,7 +96,7 @@ class Teams extends Service {
      /// Delete a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> delete({@required String teamId}) {
+     Future delete({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -102,7 +106,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        return  res.data;
     }
 
      /// Get Team Memberships
@@ -110,7 +115,7 @@ class Teams extends Service {
      /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
-    Future<Response> getMemberships({@required String teamId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+     Future<MembershipListModel> getMemberships({required String teamId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -124,7 +129,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return MembershipListModel.fromMap(res.data);
     }
 
      /// Create Team Membership
@@ -143,7 +149,7 @@ class Teams extends Service {
      /// the only valid redirect URL's are the once from domains you have set when
      /// added your platforms in the console interface.
      ///
-    Future<Response> createMembership({@required String teamId, @required String email, @required List roles, @required String url, String name = ''}) {
+     Future<MembershipModel> createMembership({required String teamId, required String email, required List roles, required String url, String name = ''}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -157,7 +163,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return MembershipModel.fromMap(res.data);
     }
 
      /// Delete Team Membership
@@ -166,7 +173,7 @@ class Teams extends Service {
      /// the membership of any other team member. You can also use this endpoint to
      /// delete a user membership even if it is not accepted.
      ///
-    Future<Response> deleteMembership({@required String teamId, @required String inviteId}) {
+     Future deleteMembership({required String teamId, required String inviteId}) async {
         final String path = '/teams/{teamId}/memberships/{inviteId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);
 
         final Map<String, dynamic> params = {
@@ -176,7 +183,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        return  res.data;
     }
 
      /// Update Team Membership Status
@@ -185,7 +193,7 @@ class Teams extends Service {
      /// after being redirected back to your app from the invitation email recieved
      /// by the user.
      ///
-    Future<Response> updateMembershipStatus({@required String teamId, @required String inviteId, @required String userId, @required String secret}) {
+     Future<MembershipModel> updateMembershipStatus({required String teamId, required String inviteId, required String userId, required String secret}) async {
         final String path = '/teams/{teamId}/memberships/{inviteId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);
 
         final Map<String, dynamic> params = {
@@ -197,6 +205,7 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        return MembershipModel.fromMap(res.data);
     }
 }

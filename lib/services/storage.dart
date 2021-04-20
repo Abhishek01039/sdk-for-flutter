@@ -10,7 +10,7 @@ class Storage extends Service {
      /// your results. On admin mode, this endpoint will return a list of all of the
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
-    Future<Response> listFiles({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+     Future<FileListModel> listFiles({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) async {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
@@ -24,7 +24,8 @@ class Storage extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return FileListModel.fromMap(res.data);
     }
 
      /// Create File
@@ -33,7 +34,7 @@ class Storage extends Service {
      /// assigned to read and write access unless he has passed custom values for
      /// read and write arguments.
      ///
-    Future<Response> createFile({@required MultipartFile file, @required List read, @required List write}) {
+     Future<FileModel> createFile({required FileInput file, List read = const [], List write = const []}) async {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
@@ -46,7 +47,8 @@ class Storage extends Service {
             'content-type': 'multipart/form-data',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return FileModel.fromMap(res.data);
     }
 
      /// Get File
@@ -54,7 +56,7 @@ class Storage extends Service {
      /// Get a file by its unique ID. This endpoint response returns a JSON object
      /// with the file metadata.
      ///
-    Future<Response> getFile({@required String fileId}) {
+     Future<FileModel> getFile({required String fileId}) async {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -64,7 +66,8 @@ class Storage extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return FileModel.fromMap(res.data);
     }
 
      /// Update File
@@ -72,7 +75,7 @@ class Storage extends Service {
      /// Update a file by its unique ID. Only users with write permissions have
      /// access to update this resource.
      ///
-    Future<Response> updateFile({@required String fileId, @required List read, @required List write}) {
+     Future<FileModel> updateFile({required String fileId, required List read, required List write}) async {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -84,7 +87,8 @@ class Storage extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        return FileModel.fromMap(res.data);
     }
 
      /// Delete File
@@ -92,7 +96,7 @@ class Storage extends Service {
      /// Delete a file by its unique ID. Only users with write permissions have
      /// access to delete this resource.
      ///
-    Future<Response> deleteFile({@required String fileId}) {
+     Future deleteFile({required String fileId}) async {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -102,7 +106,8 @@ class Storage extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        return  res.data;
     }
 
      /// Get File for Download
@@ -111,18 +116,20 @@ class Storage extends Service {
      /// 'Content-Disposition: attachment' header that tells the browser to start
      /// downloading the file to user downloads directory.
      ///
-    Future<Response> getFileDownload({@required String fileId}) {
+     Future<Uint8List>  getFileDownload({required String fileId}) async {
         final String path = '/storage/files/{fileId}/download'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
 
-        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        return res.data;
     }
 
      /// Get File Preview
@@ -132,23 +139,30 @@ class Storage extends Service {
      /// and spreadsheets, will return the file icon image. You can also pass query
      /// string arguments for cutting and resizing your preview image.
      ///
-    Future<Response> getFilePreview({@required String fileId, int width = 0, int height = 0, int quality = 100, String background = '', String output = ''}) {
+     Future<Uint8List>  getFilePreview({required String fileId, int width = 0, int height = 0, int quality = 100, int borderWidth = 0, String borderColor = '', int borderRadius = 0, int opacity = 1, int rotation = 0, String background = '', String output = ''}) async {
         final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
             'height': height,
             'quality': quality,
+            'borderWidth': borderWidth,
+            'borderColor': borderColor,
+            'borderRadius': borderRadius,
+            'opacity': opacity,
+            'rotation': rotation,
             'background': background,
             'output': output,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
 
-        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        return res.data;
     }
 
      /// Get File for View
@@ -157,17 +171,19 @@ class Storage extends Service {
      /// download method but returns with no  'Content-Disposition: attachment'
      /// header.
      ///
-    Future<Response> getFileView({@required String fileId}) {
+     Future<Uint8List>  getFileView({required String fileId}) async {
         final String path = '/storage/files/{fileId}/view'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
 
-        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
+        return res.data;
     }
 }

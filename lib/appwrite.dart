@@ -1,10 +1,10 @@
 library appwrite;
 
-import 'dart:io';
+import 'dart:io' as io;
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:universal_html/html.dart' as html;
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:dio/adapter.dart';
@@ -12,14 +12,13 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
-
-export 'package:dio/dio.dart' show Response;
+import 'package:http_parser/http_parser.dart';
 
 part 'client.dart';
 part 'enums.dart';
 part 'service.dart';
 part 'exception.dart';
+part 'file_input.dart';
 part 'services/account.dart';
 part 'services/avatars.dart';
 part 'services/database.dart';
@@ -27,3 +26,36 @@ part 'services/functions.dart';
 part 'services/locale.dart';
 part 'services/storage.dart';
 part 'services/teams.dart';
+
+part 'models/document_list.dart';
+part 'models/session_list.dart';
+part 'models/log_list.dart';
+part 'models/file_list.dart';
+part 'models/team_list.dart';
+part 'models/membership_list.dart';
+part 'models/execution_list.dart';
+part 'models/country_list.dart';
+part 'models/continent_list.dart';
+part 'models/language_list.dart';
+part 'models/currency_list.dart';
+part 'models/phone_list.dart';
+part 'models/permissions.dart';
+part 'models/collection.dart';
+part 'models/document.dart';
+part 'models/rule.dart';
+part 'models/log.dart';
+part 'models/user.dart';
+part 'models/session.dart';
+part 'models/token.dart';
+part 'models/locale_model.dart';
+part 'models/file.dart';
+part 'models/team.dart';
+part 'models/membership.dart';
+part 'models/function.dart';
+part 'models/tag.dart';
+part 'models/execution.dart';
+part 'models/country.dart';
+part 'models/continent.dart';
+part 'models/language.dart';
+part 'models/currency.dart';
+part 'models/phone.dart';

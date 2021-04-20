@@ -8,10 +8,10 @@ class Functions extends Service {
      ///
      /// Get a list of all the current user function execution logs. You can use the
      /// query params to filter your results. On admin mode, this endpoint will
-     /// return a list of all of the project's teams. [Learn more about different
-     /// API modes](/docs/admin).
+     /// return a list of all of the project's executions. [Learn more about
+     /// different API modes](/docs/admin).
      ///
-    Future<Response> listExecutions({@required String functionId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+     Future<ExecutionListModel> listExecutions({required String functionId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) async {
         final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
 
         final Map<String, dynamic> params = {
@@ -25,7 +25,8 @@ class Functions extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return ExecutionListModel.fromMap(res.data);
     }
 
      /// Create Execution
@@ -35,24 +36,26 @@ class Functions extends Service {
      /// updates on the current execution status. Once this endpoint is called, your
      /// function execution process will start asynchronously.
      ///
-    Future<Response> createExecution({@required String functionId}) {
+     Future<ExecutionModel> createExecution({required String functionId, String data = ''}) async {
         final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
 
         final Map<String, dynamic> params = {
+            'data': data,
         };
 
         final Map<String, String> headers = {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return ExecutionModel.fromMap(res.data);
     }
 
      /// Get Execution
      ///
      /// Get a function execution log by its unique ID.
      ///
-    Future<Response> getExecution({@required String functionId, @required String executionId}) {
+     Future<ExecutionModel> getExecution({required String functionId, required String executionId}) async {
         final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll(RegExp('{functionId}'), functionId).replaceAll(RegExp('{executionId}'), executionId);
 
         final Map<String, dynamic> params = {
@@ -62,6 +65,7 @@ class Functions extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return ExecutionModel.fromMap(res.data);
     }
 }
