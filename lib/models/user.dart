@@ -7,7 +7,7 @@ class UserModel {
     late final int status;
     late final String email;
     late final bool emailVerification;
-    late final String prefs;
+    late final Map<String,dynamic> prefs;
 
     UserModel({
         required this.$id,
@@ -27,7 +27,7 @@ class UserModel {
             status: map['status'],
             email: map['email'],
             emailVerification: map['emailVerification'],
-            prefs: map['prefs'],
+            prefs: Map<String,dynamic>.from(map['prefs']),
         );
     }
 

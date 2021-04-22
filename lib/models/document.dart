@@ -1,30 +1,32 @@
 part of appwrite;
 
 class DocumentModel {
-    late final String $id;
-    late final String $collection;
-    late final PermissionsModel $permissions;
+  late final String $id;
+  late final String $collection;
+  late final PermissionsModel $permissions;
+  late final Map<String, dynamic> data;
+  DocumentModel({
+    required this.$id,
+    required this.$collection,
+    required this.$permissions,
+    required this.data,
+  });
 
-    DocumentModel({
-        required this.$id,
-        required this.$collection,
-        required this.$permissions,
-    });
+  factory DocumentModel.fromMap(Map<String, dynamic> map) {
+    return DocumentModel(
+      $id: map['\$id'],
+      $collection: map['\$collection'],
+      $permissions: PermissionsModel.fromMap(map['\$permissions']),
+      data: map,
+    );
+  }
 
-    factory DocumentModel.fromMap(Map<String, dynamic> map) {
-        return DocumentModel(
-            $id: map['\$id'],
-            $collection: map['\$collection'],
-            $permissions: PermissionsModel.fromMap(map['\$permissions']),
-        );
-    }
-
-    Map<String, dynamic> toMap() {
-        return {
-            "\$id": $id,
-            "\$collection": $collection,
-            "\$permissions": $permissions.toMap(),
-        };
-    }
+  Map<String, dynamic> toMap() {
+    return {
+      "\$id": $id,
+      "\$collection": $collection,
+      "\$permissions": $permissions.toMap(),
+      "data": data,
+    };
+  }
 }
-
