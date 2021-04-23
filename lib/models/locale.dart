@@ -1,6 +1,6 @@
 part of appwrite;
 
-class LocaleModelModel {
+class LocaleModel {
     late final String ip;
     late final String countryCode;
     late final String country;
@@ -9,7 +9,7 @@ class LocaleModelModel {
     late final bool eu;
     late final String currency;
 
-    LocaleModelModel({
+    LocaleModel({
         required this.ip,
         required this.countryCode,
         required this.country,
@@ -19,8 +19,8 @@ class LocaleModelModel {
         required this.currency,
     });
 
-    factory LocaleModelModel.fromMap(Map<String, dynamic> map) {
-        return LocaleModelModel(
+    factory LocaleModel.fromMap(Map<String, dynamic> map) {
+        return LocaleModel(
             ip: map['ip'],
             countryCode: map['countryCode'],
             country: map['country'],

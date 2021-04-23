@@ -47,7 +47,7 @@ part 'models/log.dart';
 part 'models/user.dart';
 part 'models/session.dart';
 part 'models/token.dart';
-part 'models/locale_model.dart';
+part 'models/locale.dart';
 part 'models/file.dart';
 part 'models/team.dart';
 part 'models/membership.dart';

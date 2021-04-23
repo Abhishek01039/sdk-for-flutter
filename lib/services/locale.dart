@@ -13,7 +13,7 @@ class Locale extends Service {
      /// 
      /// ([IP Geolocation by DB-IP](https://db-ip.com))
      ///
-     Future<LocaleModelModel> get() async {
+     Future<LocaleModel> get() async {
         final String path = '/locale';
 
         final Map<String, dynamic> params = {
@@ -24,7 +24,7 @@ class Locale extends Service {
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
-        return LocaleModelModel.fromMap(res.data);
+        return LocaleModel.fromMap(res.data);
     }
 
      /// List Continents
