@@ -25,7 +25,7 @@ class CurrencyModel {
             name: map['name'],
             symbolNative: map['symbolNative'],
             decimalDigits: map['decimalDigits'],
-            rounding: map['rounding'],
+            rounding: map['rounding'].toDouble(),
             code: map['code'],
             namePlural: map['namePlural'],
         );

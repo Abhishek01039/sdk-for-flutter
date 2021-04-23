@@ -38,7 +38,7 @@ class Storage extends Service {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
-            'file': file,
+            'file': file._multipartFile,
             'read': read,
             'write': write,
         };
