@@ -33,7 +33,7 @@ class ExecutionModel {
             exitCode: map['exitCode'],
             stdout: map['stdout'],
             stderr: map['stderr'],
-            time: map['time'],
+            time: map['time'].toDouble(),
         );
     }
 
