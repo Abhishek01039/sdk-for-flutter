@@ -25,7 +25,7 @@ class CurrencyModel {
             name: map['name'],
             symbolNative: map['symbolNative'],
             decimalDigits: map['decimalDigits'],
-            rounding: map['rounding'].toDouble(),
+            rounding: map['rounding'].toDouble(), // converting server returned integar values to double
             code: map['code'],
             namePlural: map['namePlural'],
         );

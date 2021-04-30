@@ -33,7 +33,7 @@ class ExecutionModel {
             exitCode: map['exitCode'],
             stdout: map['stdout'],
             stderr: map['stderr'],
-            time: map['time'].toDouble(),
+            time: map['time'].toDouble(), // converting server returned integar values to double
         );
     }
 
